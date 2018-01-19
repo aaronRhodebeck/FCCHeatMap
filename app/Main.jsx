@@ -13,6 +13,26 @@ const PageSubtitle = styled.p`
 `;
 
 class Main extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { data: "" };
+  }
+
+  componentWillMount() {
+    const component = this;
+    const request = new XMLHttpRequest();
+    request.open(
+      "GET",
+      "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json",
+      true
+    );
+    request.send();
+    request.onload = function() {
+      const data = JSON.parse(request.responseText);
+      component.setState({ data: data });
+    };
+  }
+
   render() {
     return (
       <div>
@@ -24,7 +44,8 @@ class Main extends React.Component {
             Aaron Rhodebeck
           </a>
         </PageSubtitle>
-        <Chart />
+        <Chart dataset={this.state.data} />
+        <p>{JSON.stringify(this.state.data)}</p>
       </div>
     );
   }
