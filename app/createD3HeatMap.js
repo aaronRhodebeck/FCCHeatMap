@@ -8,8 +8,8 @@ export default function createD3HeatMap(
   classes = [],
   svgConfig = {
     width: 600,
-    height: 300,
-    margin: { left: 30, top: 50, right: 10, bottom: 50 },
+    height: 330,
+    margin: { left: 30, top: 50, right: 10, bottom: 80 },
     scaleable: true
   }
 ) {
@@ -94,5 +94,48 @@ export default function createD3HeatMap(
     .append("g")
     .call(yAxis)
     .attr("transform", `translate(${margin.left}, 0)`);
+  //#endregion
+
+  //#region Add color legend
+  const colorLegend = chart
+    .append("g")
+    .attr("transform", `translate(${margin.left + 30}, ${height - margin.bottom + 30})`);
+  const colorTicks = (range, numberOfTicks) => {
+    let ticks = [];
+    for (let i = 0; i <= numberOfTicks; i++) {
+      ticks.push(range[0] + i * ((range[1] - range[0]) / numberOfTicks));
+    }
+    return ticks;
+  };
+  const squareHeight = (margin.bottom - 20) / 4;
+  const squareWidth = squareHeight * 2;
+
+  const legendSquares = colorLegend
+    .selectAll("rect")
+    .data(colorTicks(tempVarianceDomain, 8))
+    .enter()
+    .append("rect")
+    .attr("height", squareHeight)
+    .attr("width", squareWidth)
+    .attr("transform", (d, i) => `translate(${i * squareWidth}, 0)`)
+    .attr("fill", d => scaleColor(d))
+    .attr("stroke", "black")
+    .style("stroke-width", 0.5);
+
+  const legendLabels = colorLegend
+    .selectAll("text")
+    .data(colorTicks(tempVarianceDomain, 8))
+    .enter()
+    .append("text")
+    .text(d => d.toFixed(2))
+    .attr(
+      "transform",
+      (d, i) => `translate(${squareWidth * i + squareWidth / 2}, ${squareHeight + 2})`
+    )
+    .style("font-size", 10)
+    .style("text-anchor", "middle")
+    .style("alignment-baseline", "hanging");
+
+  console.log(colorTicks(tempVarianceDomain, 8));
   //#endregion
 }
