@@ -1,0 +1,38 @@
+{
+  "name": "fcc-heat-map",
+  "version": "1.0.0",
+  "description": "Heat Map built with D3 and React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronRhodebeck/FCCHeatMap.git"
+  },
+  "author": "Aaron Rhodebeck",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aaronRhodebeck/FCCHeatMap/issues"
+  },
+  "homepage": "https://github.com/aaronRhodebeck/FCCHeatMap#readme",
+  "dependencies": {
+    "d3": "^4.12.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "styled-components": "^2.4.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "html-webpack-plugin": "^2.30.1",
+    "react-faux-dom": "^4.1.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.0"
+  }
+}
