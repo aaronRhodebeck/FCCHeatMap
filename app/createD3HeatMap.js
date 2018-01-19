@@ -15,6 +15,7 @@ export default function createD3HeatMap(
 ) {
   //#region Shared variables
   const { width, height, margin, scaleable } = svgConfig;
+  const { baseTemperature, monthlyVariance } = dataset;
   const classesString = classes.join(" ");
   const chart = d3.select(elementToAttachTo).append("svg");
   //#endregion
@@ -53,13 +54,13 @@ export default function createD3HeatMap(
   ];
   const parseYear = d3.timeParse("%Y");
 
-  const tempVarianceDomain = d3.extent(dataset.monthlyVariance, d => d.variance);
+  const tempVarianceDomain = d3.extent(monthlyVariance, d => d.variance);
   console.log(tempVarianceDomain);
 
-  const yearDomain = d3.extent(dataset.monthlyVariance, d => parseYear(d.year));
+  const yearDomain = d3.extent(monthlyVariance, d => parseYear(d.year));
   console.log(yearDomain);
 
-  const monthDomain = d3.extent(dataset.monthlyVariance, d => d.month);
+  const monthDomain = d3.extent(monthlyVariance, d => d.month);
   console.log(monthDomain);
 
   scaleX.domain(yearDomain).range([margin.left, width - margin.right]);
@@ -79,6 +80,27 @@ export default function createD3HeatMap(
     "Color Scale start: " + scaleColor(tempVarianceDomain[0]),
     "Color scale end: " + scaleColor(tempVarianceDomain[1])
   );
+  //#endregion
+
+  //#region Add rectangles for data
+  const barWidth = 2;
+  console.log(scaleX(parseYear(yearDomain[0] + 1)) - scaleX(parseYear(yearDomain[0])));
+  const barHeight = scaleY.bandwidth;
+
+  const bars = chart
+    .selectAll("rect")
+    .data(monthlyVariance)
+    .enter()
+    .append("rect")
+    .attr("width", barWidth)
+    .attr("height", barHeight)
+    .attr("x", d => scaleX(parseYear(d.year)) + barWidth / 2)
+    .attr("y", d => scaleY(months[d.month - 1]))
+    .attr("fill", d => scaleColor(d.variance))
+    .attr("year", d => d.year)
+    .attr("month", d => d.month)
+    .attr("variance", d => d.variance);
+  console.log(monthlyVariance);
   //#endregion
 
   //#region Add axes to chart
@@ -127,7 +149,7 @@ export default function createD3HeatMap(
     .data(colorTicks(tempVarianceDomain, 8))
     .enter()
     .append("text")
-    .text(d => d.toFixed(2))
+    .text(d => (baseTemperature + d).toFixed(1))
     .attr(
       "transform",
       (d, i) => `translate(${squareWidth * i + squareWidth / 2}, ${squareHeight + 2})`
@@ -136,6 +158,5 @@ export default function createD3HeatMap(
     .style("text-anchor", "middle")
     .style("alignment-baseline", "hanging");
 
-  console.log(colorTicks(tempVarianceDomain, 8));
   //#endregion
 }
