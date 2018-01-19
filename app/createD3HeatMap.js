@@ -8,14 +8,22 @@ export default function createD3HeatMap(
   classes = [],
   svgConfig = {
     width: 600,
+<<<<<<< HEAD
     height: 330,
     margin: { left: 30, top: 50, right: 10, bottom: 80 },
+=======
+    height: 300,
+    margin: { left: 30, top: 50, right: 10, bottom: 50 },
+>>>>>>> Setup and scaling
     scaleable: true
   }
 ) {
   //#region Shared variables
   const { width, height, margin, scaleable } = svgConfig;
+<<<<<<< HEAD
   const { baseTemperature, monthlyVariance } = dataset;
+=======
+>>>>>>> Setup and scaling
   const classesString = classes.join(" ");
   const chart = d3.select(elementToAttachTo).append("svg");
   //#endregion
@@ -30,6 +38,7 @@ export default function createD3HeatMap(
     chart.attr("width", width).attr("height", height);
   }
   //#endregion
+<<<<<<< HEAD
 
   //#region Scale names
   const scaleX = d3.scaleTime(); // Year
@@ -159,4 +168,6 @@ export default function createD3HeatMap(
     .style("alignment-baseline", "hanging");
 
   //#endregion
+=======
+>>>>>>> Setup and scaling
 }
