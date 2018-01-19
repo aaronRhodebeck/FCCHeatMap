@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { interpolateRdYlBu } from "d3-scale-chromatic";
 
 export default function createD3HeatMap(
   elementToAttachTo,
@@ -27,5 +28,53 @@ export default function createD3HeatMap(
   } else {
     chart.attr("width", width).attr("height", height);
   }
+  //#endregion
+
+  //#region Make scales
+  const scaleX = d3.scaleLinear(); // Year
+  const scaleY = d3.scaleBand(); // Month
+  const scaleColor = d3.scaleSequential(interpolateRdYlBu);
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+  const tempVarianceDomain = d3.extent(dataset.monthlyVariance, d => d.variance);
+  console.log(tempVarianceDomain);
+
+  const yearDomain = d3.extent(dataset.monthlyVariance, d => d.year);
+  console.log(yearDomain);
+
+  const monthDomain = d3.extent(dataset.monthlyVariance, d => d.month);
+  console.log(monthDomain);
+
+  scaleX.domain(yearDomain).range([margin.left, width - margin.right]);
+  console.log(
+    "X-Scale start: " + scaleX(yearDomain[0]),
+    "X-Scale end: " + scaleX(yearDomain[1])
+  );
+
+  scaleY
+    .domain(months)
+    .range([height - margin.bottom, margin.top])
+    .round();
+  console.log("Y-Scale start: " + scaleY("Jan"), scaleY("Jul"), scaleY("Dec"));
+
+  scaleColor.domain([tempVarianceDomain[1], tempVarianceDomain[0]]);
+  console.log(
+    "Color Scale start: " + scaleColor(tempVarianceDomain[0]),
+    "Color scale end: " + scaleColor(tempVarianceDomain[1])
+  );
   //#endregion
 }

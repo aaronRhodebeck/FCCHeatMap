@@ -13,7 +13,7 @@ const ChartDiv = styled.div`
 class Chart extends React.Component {
   componentWillMount() {
     const faux = this.props.connectFauxDOM("div", "chart");
-    createD3HeatMap(faux);
+    createD3HeatMap(faux, this.props.dataset);
   }
 
   render() {
