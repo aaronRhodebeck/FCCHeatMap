@@ -34,6 +34,7 @@ export default function createD3HeatMap(
   }
   //#endregion
 
+<<<<<<< HEAD
   //#region Scale names
   const scaleX = d3.scaleTime(); // Year
   const scaleY = d3.scaleBand(); // Month
@@ -41,6 +42,13 @@ export default function createD3HeatMap(
   //#endregion
 
   //#region Setup scales
+=======
+  //#region Make scales
+  const scaleX = d3.scaleLinear(); // Year
+  const scaleY = d3.scaleBand(); // Month
+  const scaleColor = d3.scaleSequential(interpolateRdYlBu);
+
+>>>>>>> Create scales
   const months = [
     "Jan",
     "Feb",
@@ -55,6 +63,7 @@ export default function createD3HeatMap(
     "Nov",
     "Dec"
   ];
+<<<<<<< HEAD
   const parseYear = d3.timeParse("%Y");
 
   const tempVarianceDomain = d3.extent(monthlyVariance, d => d.variance);
@@ -64,6 +73,16 @@ export default function createD3HeatMap(
   console.log(yearDomain);
 
   const monthDomain = d3.extent(monthlyVariance, d => d.month);
+=======
+
+  const tempVarianceDomain = d3.extent(dataset.monthlyVariance, d => d.variance);
+  console.log(tempVarianceDomain);
+
+  const yearDomain = d3.extent(dataset.monthlyVariance, d => d.year);
+  console.log(yearDomain);
+
+  const monthDomain = d3.extent(dataset.monthlyVariance, d => d.month);
+>>>>>>> Create scales
   console.log(monthDomain);
 
   scaleX.domain(yearDomain).range([margin.left, width - margin.right]);
