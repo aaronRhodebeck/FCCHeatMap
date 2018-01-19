@@ -30,11 +30,13 @@ export default function createD3HeatMap(
   }
   //#endregion
 
-  //#region Make scales
-  const scaleX = d3.scaleLinear(); // Year
+  //#region Scale names
+  const scaleX = d3.scaleTime(); // Year
   const scaleY = d3.scaleBand(); // Month
-  const scaleColor = d3.scaleSequential(interpolateRdYlBu);
+  const scaleColor = d3.scaleSequential(interpolateRdYlBu); // Colors
+  //#endregion
 
+  //#region Setup scales
   const months = [
     "Jan",
     "Feb",
@@ -49,11 +51,12 @@ export default function createD3HeatMap(
     "Nov",
     "Dec"
   ];
+  const parseYear = d3.timeParse("%Y");
 
   const tempVarianceDomain = d3.extent(dataset.monthlyVariance, d => d.variance);
   console.log(tempVarianceDomain);
 
-  const yearDomain = d3.extent(dataset.monthlyVariance, d => d.year);
+  const yearDomain = d3.extent(dataset.monthlyVariance, d => parseYear(d.year));
   console.log(yearDomain);
 
   const monthDomain = d3.extent(dataset.monthlyVariance, d => d.month);
@@ -76,5 +79,20 @@ export default function createD3HeatMap(
     "Color Scale start: " + scaleColor(tempVarianceDomain[0]),
     "Color scale end: " + scaleColor(tempVarianceDomain[1])
   );
+  //#endregion
+
+  //#region Add axes to chart
+  const xAxis = d3.axisBottom(scaleX);
+  const yAxis = d3.axisLeft(scaleY);
+
+  chart
+    .append("g")
+    .call(xAxis)
+    .attr("transform", `translate(0, ${height - margin.bottom})`);
+
+  chart
+    .append("g")
+    .call(yAxis)
+    .attr("transform", `translate(${margin.left}, 0)`);
   //#endregion
 }
