@@ -5,8 +5,8 @@ import styled from "styled-components";
 
 const ChartDiv = styled.div`
   margin: auto;
-  max-width: calc(75vh * 4/3);
-  height: 75vh;
+  max-width: calc(75vh * 2);
+  max-height: 75vh;
   box-shadow: 1px 1px 4px rgba(200, 200, 200, 0.4), -1px -1px 4px rgba(200, 200, 200, 0.3);
 `;
 
