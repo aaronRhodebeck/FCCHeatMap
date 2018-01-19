@@ -45,7 +45,6 @@ class Main extends React.Component {
           </a>
         </PageSubtitle>
         {this.state.data && <Chart dataset={this.state.data} />}
-        <p>{JSON.stringify(this.state.data)}</p>
       </div>
     );
   }
