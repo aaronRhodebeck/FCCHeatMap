@@ -9,7 +9,7 @@ export default function createD3HeatMap(
   svgConfig = {
     width: 600,
     height: 330,
-    margin: { left: 30, top: 50, right: 10, bottom: 80 },
+    margin: { left: 60, top: 50, right: 10, bottom: 80 },
     scaleable: true
   }
 ) {
@@ -122,7 +122,9 @@ export default function createD3HeatMap(
   //#region Add color legend
   const colorLegend = chart
     .append("g")
-    .attr("transform", `translate(${margin.left + 30}, ${height - margin.bottom + 30})`);
+    .attr("transform", `translate(${margin.left + 30}, ${height - margin.bottom + 30})`)
+    .attr("id", "legend");
+
   const colorTicks = (range, numberOfTicks) => {
     let ticks = [];
     for (let i = 0; i <= numberOfTicks; i++) {
