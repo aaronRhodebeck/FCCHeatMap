@@ -98,8 +98,8 @@ export default function createD3HeatMap(
     .attr("fill", d => scaleColor(d.variance))
     .attr("year", d => d.year)
     .attr("month", d => d.month)
-    .attr("variance", d => d.variance);
-  console.log(monthlyVariance);
+    .attr("variance", d => d.variance)
+    .attr("class", "cell");
   //#endregion
 
   //#region Add axes to chart
@@ -143,8 +143,7 @@ export default function createD3HeatMap(
     .attr("transform", (d, i) => `translate(${i * squareWidth}, 0)`)
     .attr("fill", d => scaleColor(d))
     .attr("stroke", "black")
-    .style("stroke-width", 0.5)
-    .attr("class", "cell");
+    .style("stroke-width", 0.5);
 
   const legendLabels = colorLegend
     .selectAll("text")
@@ -175,6 +174,12 @@ export default function createD3HeatMap(
     .attr("transform", "translate(300, 40)")
     .style("text-anchor", "middle")
     .attr("id", "description");
+  //#endregion
 
+  //#region Add properties to bars
+  const fccProps = bars
+    .attr("data-month", d => d.month - 1)
+    .attr("data-year", d => d.year)
+    .attr("data-temp", d => d.variance);
   //#endregion
 }
