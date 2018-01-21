@@ -9,7 +9,7 @@ export default function createD3HeatMap(
   svgConfig = {
     width: 600,
     height: 330,
-    margin: { left: 30, top: 50, right: 10, bottom: 80 },
+    margin: { left: 60, top: 50, right: 10, bottom: 80 },
     scaleable: true
   }
 ) {
@@ -39,18 +39,18 @@ export default function createD3HeatMap(
 
   //#region Setup scales
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
+    "January",
+    "February",
+    "March",
+    "April",
     "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ];
   const parseYear = d3.timeParse("%Y");
 
@@ -98,8 +98,8 @@ export default function createD3HeatMap(
     .attr("fill", d => scaleColor(d.variance))
     .attr("year", d => d.year)
     .attr("month", d => d.month)
-    .attr("variance", d => d.variance);
-  console.log(monthlyVariance);
+    .attr("variance", d => d.variance)
+    .attr("class", "cell");
   //#endregion
 
   //#region Add axes to chart
@@ -109,18 +109,22 @@ export default function createD3HeatMap(
   chart
     .append("g")
     .call(xAxis)
-    .attr("transform", `translate(0, ${height - margin.bottom})`);
+    .attr("transform", `translate(0, ${height - margin.bottom})`)
+    .attr("id", "x-axis");
 
   chart
     .append("g")
     .call(yAxis)
-    .attr("transform", `translate(${margin.left}, 0)`);
+    .attr("transform", `translate(${margin.left}, 0)`)
+    .attr("id", "y-axis");
   //#endregion
 
   //#region Add color legend
   const colorLegend = chart
     .append("g")
-    .attr("transform", `translate(${margin.left + 30}, ${height - margin.bottom + 30})`);
+    .attr("transform", `translate(${margin.left + 30}, ${height - margin.bottom + 30})`)
+    .attr("id", "legend");
+
   const colorTicks = (range, numberOfTicks) => {
     let ticks = [];
     for (let i = 0; i <= numberOfTicks; i++) {
@@ -157,5 +161,27 @@ export default function createD3HeatMap(
     .style("text-anchor", "middle")
     .style("alignment-baseline", "hanging");
 
+  //#endregion
+
+  //#region Add title
+  const title = chart
+    .append("text")
+    .text("Global Surface Temperatures")
+    .attr("id", "title")
+    .attr("transform", "translate(300, 20)")
+    .style("text-anchor", "middle");
+  const description = chart
+    .append("text")
+    .text("1753 - 2015: average temperature 8.66\u00B0C")
+    .attr("transform", "translate(300, 40)")
+    .style("text-anchor", "middle")
+    .attr("id", "description");
+  //#endregion
+
+  //#region Add properties to bars
+  const fccProps = bars
+    .attr("data-month", d => d.month - 1)
+    .attr("data-year", d => d.year)
+    .attr("data-temp", d => d.variance);
   //#endregion
 }
