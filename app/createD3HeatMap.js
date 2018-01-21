@@ -109,12 +109,14 @@ export default function createD3HeatMap(
   chart
     .append("g")
     .call(xAxis)
-    .attr("transform", `translate(0, ${height - margin.bottom})`);
+    .attr("transform", `translate(0, ${height - margin.bottom})`)
+    .attr("id", "x-axis");
 
   chart
     .append("g")
     .call(yAxis)
-    .attr("transform", `translate(${margin.left}, 0)`);
+    .attr("transform", `translate(${margin.left}, 0)`)
+    .attr("id", "y-axis");
   //#endregion
 
   //#region Add color legend
@@ -141,7 +143,8 @@ export default function createD3HeatMap(
     .attr("transform", (d, i) => `translate(${i * squareWidth}, 0)`)
     .attr("fill", d => scaleColor(d))
     .attr("stroke", "black")
-    .style("stroke-width", 0.5);
+    .style("stroke-width", 0.5)
+    .attr("class", "cell");
 
   const legendLabels = colorLegend
     .selectAll("text")
@@ -156,6 +159,22 @@ export default function createD3HeatMap(
     .style("font-size", 10)
     .style("text-anchor", "middle")
     .style("alignment-baseline", "hanging");
+
+  //#endregion
+
+  //#region Add title
+  const title = chart
+    .append("text")
+    .text("Global Surface Temperatures")
+    .attr("id", "title")
+    .attr("transform", "translate(300, 20)")
+    .style("text-anchor", "middle");
+  const description = chart
+    .append("text")
+    .text("1753 - 2015: average temperature 8.66\u00B0C")
+    .attr("transform", "translate(300, 40)")
+    .style("text-anchor", "middle")
+    .attr("id", "description");
 
   //#endregion
 }
