@@ -35958,7 +35958,7 @@ function createD3HeatMap(elementToAttachTo, dataset, reactComponent) {
   var svgConfig = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {
     width: 600,
     height: 330,
-    margin: { left: 30, top: 50, right: 10, bottom: 80 },
+    margin: { left: 60, top: 50, right: 10, bottom: 80 },
     scaleable: true
   };
 
@@ -35990,7 +35990,7 @@ function createD3HeatMap(elementToAttachTo, dataset, reactComponent) {
   //#endregion
 
   //#region Setup scales
-  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var parseYear = d3.timeParse("%Y");
 
   var tempVarianceDomain = d3.extent(monthlyVariance, function (d) {
@@ -36034,21 +36034,21 @@ function createD3HeatMap(elementToAttachTo, dataset, reactComponent) {
     return d.month;
   }).attr("variance", function (d) {
     return d.variance;
-  });
-  console.log(monthlyVariance);
+  }).attr("class", "cell");
   //#endregion
 
   //#region Add axes to chart
   var xAxis = d3.axisBottom(scaleX);
   var yAxis = d3.axisLeft(scaleY);
 
-  chart.append("g").call(xAxis).attr("transform", "translate(0, " + (height - margin.bottom) + ")");
+  chart.append("g").call(xAxis).attr("transform", "translate(0, " + (height - margin.bottom) + ")").attr("id", "x-axis");
 
-  chart.append("g").call(yAxis).attr("transform", "translate(" + margin.left + ", 0)");
+  chart.append("g").call(yAxis).attr("transform", "translate(" + margin.left + ", 0)").attr("id", "y-axis");
   //#endregion
 
   //#region Add color legend
-  var colorLegend = chart.append("g").attr("transform", "translate(" + (margin.left + 30) + ", " + (height - margin.bottom + 30) + ")");
+  var colorLegend = chart.append("g").attr("transform", "translate(" + (margin.left + 30) + ", " + (height - margin.bottom + 30) + ")").attr("id", "legend");
+
   var colorTicks = function colorTicks(range, numberOfTicks) {
     var ticks = [];
     for (var i = 0; i <= numberOfTicks; i++) {
@@ -36071,6 +36071,21 @@ function createD3HeatMap(elementToAttachTo, dataset, reactComponent) {
     return "translate(" + (squareWidth * i + squareWidth / 2) + ", " + (squareHeight + 2) + ")";
   }).style("font-size", 10).style("text-anchor", "middle").style("alignment-baseline", "hanging");
 
+  //#endregion
+
+  //#region Add title
+  var title = chart.append("text").text("Global Surface Temperatures").attr("id", "title").attr("transform", "translate(300, 20)").style("text-anchor", "middle");
+  var description = chart.append("text").text("1753 - 2015: average temperature 8.66\xB0C").attr("transform", "translate(300, 40)").style("text-anchor", "middle").attr("id", "description");
+  //#endregion
+
+  //#region Add properties to bars
+  var fccProps = bars.attr("data-month", function (d) {
+    return d.month - 1;
+  }).attr("data-year", function (d) {
+    return d.year;
+  }).attr("data-temp", function (d) {
+    return d.variance;
+  });
   //#endregion
 }
 
