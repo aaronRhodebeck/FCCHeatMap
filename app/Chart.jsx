@@ -2,6 +2,7 @@ import React from "react";
 import { withFauxDOM } from "react-faux-dom";
 import createD3HeatMap from "./createD3HeatMap";
 import styled from "styled-components";
+import { TooltipBase, TooltipDate, TooltipTemp } from "./Tooltip.jsx";
 
 const ChartDiv = styled.div`
   margin: 5;
@@ -11,13 +12,35 @@ const ChartDiv = styled.div`
 `;
 
 class Chart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tooltip: { visibility: "hidden", top: 0, left: 0, year: 0, month: "", temp: 0 }
+    };
+  }
+
   componentWillMount() {
     const faux = this.props.connectFauxDOM("div", "chart");
-    createD3HeatMap(faux, this.props.dataset);
+    createD3HeatMap(faux, this.props.dataset, this);
   }
 
   render() {
-    return <ChartDiv>{this.props.chart}</ChartDiv>;
+    const { tooltip } = this.state;
+    return (
+      <ChartDiv>
+        {this.props.chart}
+        <TooltipBase
+          visibility={tooltip.visibility}
+          top={tooltip.top}
+          left={tooltip.left}
+        >
+          <TooltipDate>
+            {tooltip.month}, {tooltip.year}
+          </TooltipDate>
+          <TooltipTemp>{tooltip.temp}&deg;C</TooltipTemp>
+        </TooltipBase>
+      </ChartDiv>
+    );
   }
 }
 
