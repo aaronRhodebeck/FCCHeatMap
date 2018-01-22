@@ -201,7 +201,7 @@ export default function createD3HeatMap(
   });
 
   bars.on("mouseout", d => {
-    reactComponent.setState({ tooltip: { visibility: "hidden" } });
+    reactComponent.setState({ tooltip: { visibility: "hidden", year: 0 } });
   });
   //#endregion
 }

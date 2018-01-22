@@ -30,11 +30,13 @@ class Chart extends React.Component {
       <ChartDiv>
         {this.props.chart}
         <TooltipBase
-          visibility={tooltip.visibility}
+          id="tooltip"
+          style={{ visibility: tooltip.visibility }}
           top={tooltip.top}
+          data-year={tooltip.year}
           left={tooltip.left}
         >
-          <TooltipDate>
+          <TooltipDate data-year={tooltip.year}>
             {tooltip.month}, {tooltip.year}
           </TooltipDate>
           <TooltipTemp>{tooltip.temp}&deg;C</TooltipTemp>
