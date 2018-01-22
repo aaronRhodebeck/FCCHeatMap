@@ -184,8 +184,6 @@ export default function createD3HeatMap(
     .attr("data-year", d => d.year)
     .attr("data-temp", d => d.variance);
   //#endregion
-<<<<<<< HEAD
-=======
 
   //#region Set tooltip
   bars.on("mouseover", d => {
@@ -206,5 +204,4 @@ export default function createD3HeatMap(
     reactComponent.setState({ tooltip: { visibility: "hidden" } });
   });
   //#endregion
->>>>>>> tooltip
 }
