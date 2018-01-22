@@ -184,4 +184,24 @@ export default function createD3HeatMap(
     .attr("data-year", d => d.year)
     .attr("data-temp", d => d.variance);
   //#endregion
+
+  //#region Set tooltip
+  bars.on("mouseover", d => {
+    let tooltip = reactComponent.state.tooltip;
+    reactComponent.setState({
+      tooltip: {
+        visibility: "visible",
+        top: d3.event.pageY,
+        left: d3.event.pageX,
+        month: months[d.month - 1],
+        year: d.year,
+        temp: (d.variance + 8.66).toFixed(2)
+      }
+    });
+  });
+
+  bars.on("mouseout", d => {
+    reactComponent.setState({ tooltip: { visibility: "hidden" } });
+  });
+  //#endregion
 }
